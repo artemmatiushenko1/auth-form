@@ -49,7 +49,10 @@ const AuthForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="space-y-8 w-full"
+      >
         <FormField
           control={form.control}
           name="fullName"
