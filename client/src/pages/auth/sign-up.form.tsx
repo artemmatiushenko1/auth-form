@@ -140,7 +140,7 @@ const SignUpForm = () => {
           Already have an account?{' '}
           <Link className="text-primary" to={AppRoute.SignIn}>
             Sign in
-          </Link>{' '}
+          </Link>
         </div>
       </form>
     </Form>

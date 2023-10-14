@@ -15,6 +15,10 @@ const AuthPage = () => {
     return <SignUpForm />;
   };
 
+  const getFormTitle = () => {
+    return pathname === AppRoute.SignIn ? 'Sign In' : 'Sign Up';
+  };
+
   return (
     <div className="flex w-full flex-shrink-0 max-h-full h-full">
       <div className="flex-1 flex-shrink-0 bg-primary flex items-center justify-center">
@@ -23,7 +27,7 @@ const AuthPage = () => {
         </div>
       </div>
       <div className="flex-1 flex-shrink-0 max-w-[500px] w-full p-20 pb-[40px] pt-30  overflow-auto flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold mb-7 self-start">Sign Up</h1>
+        <h1 className="text-3xl font-bold mb-7 self-start">{getFormTitle()}</h1>
         {getForm()}
       </div>
     </div>
