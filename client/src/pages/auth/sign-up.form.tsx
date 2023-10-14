@@ -20,19 +20,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '@/lib/enums';
-
-const signUpSchema = z.object({
-  email: z.string().email(),
-  fullName: z.string().trim().min(1, 'Full name is required'),
-  group: z.string().min(1, 'Group is required'),
-  password: z
-    .string()
-    .trim()
-    .min(8, 'Password must be at least 8 characters long'),
-  variant: z
-    .number({ invalid_type_error: 'Must be a valid number' })
-    .positive('Variant must be greater than 0'),
-});
+import { signUpSchema } from './lib/validation-schemas/validation-schemas.js';
 
 type FormValues = z.infer<typeof signUpSchema>;
 
