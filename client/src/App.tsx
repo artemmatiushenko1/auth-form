@@ -1,4 +1,3 @@
-import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppRoute } from './lib/enums';
 import { HomePage } from './pages/home/home.page';
@@ -7,7 +6,7 @@ import { SignUpPage } from './pages/auth/sign-up.page';
 
 const App = () => {
   return (
-    <div>
+    <div className="w-full min-h-screen h-screen flex">
       <Routes>
         <Route path={AppRoute.Home} element={<HomePage />} />
         <Route path={AppRoute.SignIn} element={<SignInPage />} />
