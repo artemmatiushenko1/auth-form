@@ -1,4 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SignInRequestDto } from './dtos/sign-in-request.dto';
 import { SignUpRequestDto } from './dtos/sign-up-request.dto';
 import { UserService } from 'src/user/user.service';
@@ -8,7 +12,19 @@ export class AuthService {
   constructor(private readonly userService: UserService) {}
 
   async signIn(signInRequest: SignInRequestDto) {
-    return null;
+    const existingUser = await this.userService.findByEmail(
+      signInRequest.email,
+    );
+
+    if (!existingUser) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (existingUser.password === signInRequest.password) {
+      return existingUser;
+    }
+
+    throw new UnauthorizedException('Invalid credentials');
   }
 
   async signUp(signUpRequest: SignUpRequestDto) {
