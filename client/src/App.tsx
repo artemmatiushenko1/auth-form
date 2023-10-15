@@ -6,7 +6,11 @@ const App = () => {
   const { hasAuth, getUserStatus, user } = useAuthContext();
 
   if (hasAuth && !user && getUserStatus !== DataStatus.FULLFILED) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full flex items-center justify-center h-screen min-h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (

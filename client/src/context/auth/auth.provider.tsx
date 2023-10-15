@@ -27,6 +27,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
       if (res.status === 401) {
         setSetUnauthorizedError(true);
+        return;
       }
 
       const data: User = await res.json();

@@ -85,7 +85,7 @@ const SignInForm = () => {
         <Button className="w-full" type="submit">
           Submit
         </Button>
-        <div className="text-gray-400 text-center">
+        <div className="text-muted-foreground text-center">
           Don't have an account?{' '}
           <Link className="text-primary" to={AppRoute.SignUp}>
             Sign Up
