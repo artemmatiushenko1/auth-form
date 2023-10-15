@@ -21,16 +21,36 @@ import { z } from 'zod';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '@/lib/enums';
 import { signUpSchema } from './lib/validation-schemas/validation-schemas.js';
+import { ACCESS_TOKEN_KEY } from '@/lib/constants.js';
+import { useAuthContext } from '@/context/auth/auth.context.js';
 
 type FormValues = z.infer<typeof signUpSchema>;
 
 const SignUpForm = () => {
+  const { getCurrentUser } = useAuthContext();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(signUpSchema),
   });
 
-  const handleSubmit = (values: FormValues) => {
-    console.log(values);
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      const response = await fetch('/api/auth/sign-up', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        return;
+      }
+
+      const { accessToken } = await response.json();
+      getCurrentUser(accessToken);
+      window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    } catch (err) {
+      console.log({ err });
+    }
   };
 
   const groupSelectOptions = ['ІП-01', 'ІП-02', 'ІП-03', 'ІП-04', 'ІП-05'].map(

@@ -21,6 +21,7 @@ type FormValues = z.infer<typeof signInSchema>;
 
 const SignInForm = () => {
   const { getCurrentUser } = useAuthContext();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(signInSchema),
   });
@@ -32,6 +33,10 @@ const SignInForm = () => {
         body: JSON.stringify(values),
         headers: { 'Content-Type': 'application/json' },
       });
+
+      if (!response.ok) {
+        return;
+      }
 
       const { accessToken } = await response.json();
       getCurrentUser(accessToken);
@@ -83,7 +88,7 @@ const SignInForm = () => {
         <div className="text-gray-400 text-center">
           Don't have an account?{' '}
           <Link className="text-primary" to={AppRoute.SignUp}>
-            Sign in
+            Sign Up
           </Link>
         </div>
       </form>
