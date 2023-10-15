@@ -6,6 +6,7 @@ import {
 import { SignInRequestDto } from './dtos/sign-in-request.dto';
 import { SignUpRequestDto } from './dtos/sign-up-request.dto';
 import { UserService } from 'src/user/user.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    if (existingUser.password === signInRequest.password) {
+    if (await bcrypt.compare(signInRequest.password, existingUser.password)) {
       return existingUser;
     }
 

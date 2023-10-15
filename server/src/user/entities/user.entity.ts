@@ -1,6 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Role } from '../enums/role.enum';
 import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
+
+const SALT_OR_ROUNDS = 10;
 
 @Entity('users')
 export class User {
@@ -25,4 +34,12 @@ export class User {
 
   @Column()
   role: Role;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  public async hashPassword() {
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, SALT_OR_ROUNDS);
+    }
+  }
 }
