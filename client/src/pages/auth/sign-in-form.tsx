@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input.js';
 import { Button } from '@/components/ui/button.js';
 import { useAuthContext } from '@/context/auth/auth.context.js';
 import { ACCESS_TOKEN_KEY } from '@/lib/constants.js';
+import { toast } from 'react-toastify';
 
 type FormValues = z.infer<typeof signInSchema>;
 
@@ -34,11 +35,14 @@ const SignInForm = () => {
         headers: { 'Content-Type': 'application/json' },
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
+        toast.error(data.message);
         return;
       }
 
-      const { accessToken } = await response.json();
+      const { accessToken } = data;
       getCurrentUser(accessToken);
       window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     } catch (err) {

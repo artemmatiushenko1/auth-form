@@ -23,6 +23,7 @@ import { AppRoute } from '@/lib/enums';
 import { signUpSchema } from './lib/validation-schemas/validation-schemas.js';
 import { ACCESS_TOKEN_KEY } from '@/lib/constants.js';
 import { useAuthContext } from '@/context/auth/auth.context.js';
+import { toast } from 'react-toastify';
 
 type FormValues = z.infer<typeof signUpSchema>;
 
@@ -41,11 +42,14 @@ const SignUpForm = () => {
         headers: { 'Content-Type': 'application/json' },
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
+        toast.error(data.message);
         return;
       }
 
-      const { accessToken } = await response.json();
+      const { accessToken } = data;
       getCurrentUser(accessToken);
       window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     } catch (err) {
