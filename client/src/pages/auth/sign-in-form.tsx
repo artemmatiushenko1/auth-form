@@ -14,16 +14,31 @@ import {
 } from '@/components/ui/form.js';
 import { Input } from '@/components/ui/input.js';
 import { Button } from '@/components/ui/button.js';
+import { useAuthContext } from '@/context/auth/auth.context.js';
+import { ACCESS_TOKEN_KEY } from '@/lib/constants.js';
 
 type FormValues = z.infer<typeof signInSchema>;
 
 const SignInForm = () => {
+  const { getCurrentUser } = useAuthContext();
   const form = useForm<FormValues>({
     resolver: zodResolver(signInSchema),
   });
 
-  const handleSubmit = (values: FormValues) => {
-    console.log(values);
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      const response = await fetch('/api/auth/sign-in', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const { accessToken } = await response.json();
+      getCurrentUser(accessToken);
+      window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    } catch (err) {
+      console.log({ err });
+    }
   };
 
   return (
