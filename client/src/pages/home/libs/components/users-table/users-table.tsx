@@ -12,11 +12,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useEffect } from 'react';
-import { columns } from './columns.jsx';
+import { getColumns } from './columns.jsx';
 import { useUsersContext } from '@/context/users/users.js';
+import { useAuthContext } from '@/context/auth/auth.context.js';
+import { User } from '@/lib/types.js';
 
 const UsersTable = () => {
+  const { user: currentUser } = useAuthContext();
   const { users, getAllUsers } = useUsersContext();
+
+  const columns = getColumns(currentUser ?? ({} as User));
 
   const table = useReactTable({
     columns,

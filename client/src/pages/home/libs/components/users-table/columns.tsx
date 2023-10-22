@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge.jsx';
 import { UsersTableRowActions } from './users-table-actions.jsx';
 import { Role } from '@/lib/enums.js';
 
-export const columns: ColumnDef<User>[] = [
+export const getColumns = (currentUser: User): ColumnDef<User>[] => [
   {
     accessorKey: 'id',
     header: 'ID',
@@ -59,8 +59,12 @@ export const columns: ColumnDef<User>[] = [
       );
     },
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => <UsersTableRowActions row={row} />,
-  },
+  ...((currentUser.role === Role.Admin
+    ? [
+        {
+          id: 'actions',
+          cell: ({ row }) => <UsersTableRowActions row={row} />,
+        },
+      ]
+    : []) as ColumnDef<User>[]),
 ];
