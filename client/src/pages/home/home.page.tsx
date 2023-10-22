@@ -16,6 +16,10 @@ import { Hash, Users2 } from 'lucide-react';
 const HomePage = () => {
   const { user, signOut } = useAuthContext();
 
+  const [firstNameChar, lastNameChar] = (user?.fullName ?? '')
+    .split(' ')
+    .map((part) => part.at(0));
+
   return (
     <div className="w-full h-full flex items-center justify-center bg-background">
       <Card className="w-[350px]">
@@ -33,7 +37,8 @@ const HomePage = () => {
             <div className="flex space-x-4 items-center">
               <Avatar>
                 <AvatarFallback>
-                  {user?.fullName.split(' ').map((part) => part.at(0))}
+                  {firstNameChar}
+                  {lastNameChar}
                 </AvatarFallback>
               </Avatar>
               <div>
