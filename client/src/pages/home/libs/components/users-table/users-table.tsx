@@ -11,16 +11,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button.jsx';
 import { PlusCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { User } from '@/lib/types.js';
-import { makeRequest } from '@/lib/utils.js';
-import { HttpMethod } from '@/lib/enums.js';
+import { useEffect } from 'react';
 import { columns } from './columns.jsx';
+import { useUsersContext } from '@/context/users/users.js';
 
 const UsersTable = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const { users, getAllUsers } = useUsersContext();
 
   const table = useReactTable({
     columns,
@@ -28,20 +26,8 @@ const UsersTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const fetchUsers = async () => {
-    const payload = await makeRequest<User[]>({
-      pathname: '/users',
-      method: HttpMethod.GET,
-      hasAuth: true,
-    });
-
-    if (payload) {
-      setUsers(payload);
-    }
-  };
-
   useEffect(() => {
-    fetchUsers();
+    getAllUsers();
   }, []);
 
   return (

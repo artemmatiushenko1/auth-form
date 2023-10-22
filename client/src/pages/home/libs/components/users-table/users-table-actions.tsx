@@ -5,20 +5,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button.jsx';
 import { MoreVertical } from 'lucide-react';
 import { User } from '@/lib/types.js';
+import { useUsersContext } from '@/context/users/users.js';
 
 interface UsersTableRowActionsProps {
   row: Row<User>;
 }
 
 export const UsersTableRowActions = ({ row }: UsersTableRowActionsProps) => {
+  const { deleteUser } = useUsersContext();
   const user = row.original;
 
   const handleEdit = () => {};
 
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    deleteUser(user.id);
+  };
 
   return (
     <DropdownMenu>
