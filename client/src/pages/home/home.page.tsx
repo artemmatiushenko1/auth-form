@@ -22,7 +22,7 @@ const HomePage = () => {
     .map((part) => part.at(0));
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-background">
+    <div className="w-full h-full flex items-center justify-center bg-background flex-col">
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
