@@ -19,11 +19,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '@/lib/enums';
+import { AppRoute, HttpMethod } from '@/lib/enums';
 import { signUpSchema } from './lib/validation-schemas/validation-schemas.js';
-import { ACCESS_TOKEN_KEY } from '@/lib/constants.js';
 import { useAuthContext } from '@/context/auth/auth.context.js';
-import { toast } from 'react-toastify';
+import { makeRequest } from '@/lib/utils.js';
+import { setAccessToken } from '@/context/auth/token.js';
 
 type FormValues = z.infer<typeof signUpSchema>;
 
@@ -35,26 +35,17 @@ const SignUpForm = () => {
   });
 
   const handleSubmit = async (values: FormValues) => {
-    try {
-      const response = await fetch('/api/auth/sign-up', {
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: { 'Content-Type': 'application/json' },
-      });
+    const payload = await makeRequest<{ accessToken: string }>({
+      pathname: '/auth/sign-up',
+      method: HttpMethod.POST,
+      body: JSON.stringify(values),
+    });
 
-      const data = await response.json();
+    if (!payload) return;
 
-      if (!response.ok) {
-        toast.error(data.message);
-        return;
-      }
-
-      const { accessToken } = data;
-      getCurrentUser(accessToken);
-      window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-    } catch (err) {
-      console.log({ err });
-    }
+    const { accessToken } = payload;
+    getCurrentUser(accessToken);
+    setAccessToken(accessToken);
   };
 
   const groupSelectOptions = ['ІП-01', 'ІП-02', 'ІП-03', 'ІП-04', 'ІП-05'].map(

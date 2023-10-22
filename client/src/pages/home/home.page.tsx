@@ -12,6 +12,7 @@ import {
 import { useAuthContext } from '@/context/auth/auth.js';
 import { Role } from '@/lib/enums';
 import { Hash, Users2 } from 'lucide-react';
+import { UsersTable } from './libs/components/components.js';
 
 const HomePage = () => {
   const { user, signOut } = useAuthContext();
@@ -64,6 +65,7 @@ const HomePage = () => {
           </Button>
         </CardFooter>
       </Card>
+      <UsersTable />
     </div>
   );
 };

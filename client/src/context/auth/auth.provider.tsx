@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute, DataStatus } from '@/lib/enums';
 import { User, ValueOf } from '@/lib/types';
 import { ACCESS_TOKEN_KEY } from '@/lib/constants';
+import { setAccessToken } from './token';
 
 type AuthContextProviderProps = {
   children: React.ReactNode;
@@ -13,7 +14,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(null);
-  const [hasUnauthorizedError, setSetUnauthorizedError] = useState(false);
+  const [hasUnauthorizedError, setHasUnauthorizedError] = useState(false);
   const [getUserStatus, setGetUserStatus] = useState<
     ValueOf<typeof DataStatus>
   >(DataStatus.IDLE);
@@ -26,29 +27,30 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       });
 
       if (res.status === 401) {
-        setSetUnauthorizedError(true);
+        setHasUnauthorizedError(true);
         return;
       }
 
-      const data: User = await res.json();
-      setUser(data);
+      const data: { payload: User } = await res.json();
+      setUser(data.payload);
       setGetUserStatus(DataStatus.FULLFILED);
     } catch (err) {
       setGetUserStatus(DataStatus.REJECTED);
       navigate(AppRoute.Home);
-      window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+      setAccessToken(null);
     }
   };
 
   const signOut = () => {
     setUser(null);
-    window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+    setAccessToken(null);
   };
 
   useEffect(() => {
     const storageToken = window.localStorage.getItem(ACCESS_TOKEN_KEY);
 
     if (storageToken) {
+      setAccessToken(storageToken);
       getCurrentUser(storageToken);
     }
   }, []);
@@ -56,7 +58,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   useEffect(() => {
     if (hasUnauthorizedError) {
       navigate(AppRoute.SignIn);
-      window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+      setAccessToken(null);
     }
   }, [hasUnauthorizedError, navigate]);
 
@@ -66,7 +68,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   return (
     <AuthContext.Provider
       value={{
-        setSetUnauthorizedError,
+        setHasUnauthorizedError,
         user,
         setUser,
         hasAuth,

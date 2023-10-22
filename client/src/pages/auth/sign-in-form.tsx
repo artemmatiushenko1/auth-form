@@ -2,7 +2,7 @@ import { signInSchema } from './lib/validation-schemas/validation-schemas.js';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AppRoute } from '@/lib/enums.js';
+import { AppRoute, HttpMethod } from '@/lib/enums.js';
 import { Link } from 'react-router-dom';
 import {
   Form,
@@ -15,8 +15,8 @@ import {
 import { Input } from '@/components/ui/input.js';
 import { Button } from '@/components/ui/button.js';
 import { useAuthContext } from '@/context/auth/auth.context.js';
-import { ACCESS_TOKEN_KEY } from '@/lib/constants.js';
-import { toast } from 'react-toastify';
+import { makeRequest } from '@/lib/utils.js';
+import { setAccessToken } from '@/context/auth/token.js';
 
 type FormValues = z.infer<typeof signInSchema>;
 
@@ -28,26 +28,17 @@ const SignInForm = () => {
   });
 
   const handleSubmit = async (values: FormValues) => {
-    try {
-      const response = await fetch('/api/auth/sign-in', {
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: { 'Content-Type': 'application/json' },
-      });
+    const payload = await makeRequest<{ accessToken: string }>({
+      pathname: '/auth/sign-in',
+      method: HttpMethod.POST,
+      body: JSON.stringify(values),
+    });
 
-      const data = await response.json();
+    if (!payload) return;
 
-      if (!response.ok) {
-        toast.error(data.message);
-        return;
-      }
-
-      const { accessToken } = data;
-      getCurrentUser(accessToken);
-      window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-    } catch (err) {
-      console.log({ err });
-    }
+    const { accessToken } = payload;
+    getCurrentUser(accessToken);
+    setAccessToken(accessToken);
   };
 
   return (

@@ -16,4 +16,11 @@ const DataStatus = {
   REJECTED: 4,
 } as const;
 
-export { AppRoute, Role, DataStatus };
+const HttpMethod = {
+  GET: 'get',
+  POST: 'post',
+  PATCH: 'patch',
+  DELETE: 'delete',
+} as const;
+
+export { AppRoute, Role, DataStatus, HttpMethod };
