@@ -17,10 +17,10 @@ const DataStatus = {
 } as const;
 
 const HttpMethod = {
-  GET: 'get',
-  POST: 'post',
-  PATCH: 'patch',
-  DELETE: 'delete',
+  GET: 'GET',
+  POST: 'POST',
+  PATCH: 'PATCH',
+  DELETE: 'DELETE',
 } as const;
 
 export { AppRoute, Role, DataStatus, HttpMethod };

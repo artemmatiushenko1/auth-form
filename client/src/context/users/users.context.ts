@@ -10,7 +10,7 @@ type TUsersContext = {
   updateUser: (
     userId: number,
     payload: Partial<Omit<User, 'id'>>
-  ) => Promise<void>;
+  ) => Promise<boolean>;
 };
 
 export const UsersContext = createContext<TUsersContext>({} as TUsersContext);

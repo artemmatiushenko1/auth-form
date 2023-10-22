@@ -43,7 +43,7 @@ const UsersContextProvider = ({ children }: UsersContextProviderProps) => {
     const updatedUser = await makeRequest<User>({
       pathname: `/users/${userId}`,
       hasAuth: true,
-      method: HttpMethod.POST,
+      method: HttpMethod.PATCH,
       body: JSON.stringify(payload),
     });
 
@@ -51,7 +51,11 @@ const UsersContextProvider = ({ children }: UsersContextProviderProps) => {
       setUsers((prevUsers) =>
         prevUsers.map((item) => (item.id === userId ? updatedUser : item))
       );
+
+      return true;
     }
+
+    return false;
   };
 
   return (

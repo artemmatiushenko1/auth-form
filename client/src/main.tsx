@@ -7,10 +7,12 @@ import './index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <AuthContextProvider>
-      <App />
-      <ToastContainer />
-    </AuthContextProvider>
-  </BrowserRouter>
+  <>
+    <BrowserRouter>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
+    </BrowserRouter>
+    <ToastContainer />
+  </>
 );

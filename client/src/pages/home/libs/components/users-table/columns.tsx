@@ -63,7 +63,10 @@ export const getColumns = (currentUser: User): ColumnDef<User>[] => [
     ? [
         {
           id: 'actions',
-          cell: ({ row }) => <UsersTableRowActions row={row} />,
+          cell: ({ row }) =>
+            row.getValue('id') !== currentUser.id ? (
+              <UsersTableRowActions row={row} />
+            ) : null,
         },
       ]
     : []) as ColumnDef<User>[]),
