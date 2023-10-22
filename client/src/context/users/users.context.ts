@@ -1,8 +1,10 @@
-import { User } from '@/lib/types';
-import { createContext, useContext } from 'react';
+import { User } from '@/lib/types.js';
+import { Dispatch, SetStateAction, createContext, useContext } from 'react';
 
 type TUsersContext = {
   users: User[];
+  selectedUser: User | null;
+  setSelectedUser: Dispatch<SetStateAction<User | null>>;
   getAllUsers: () => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
   updateUser: (

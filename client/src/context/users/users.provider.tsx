@@ -10,6 +10,7 @@ type UsersContextProviderProps = {
 
 const UsersContextProvider = ({ children }: UsersContextProviderProps) => {
   const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const getAllUsers = async () => {
     const payload = await makeRequest<User[]>({
@@ -55,7 +56,14 @@ const UsersContextProvider = ({ children }: UsersContextProviderProps) => {
 
   return (
     <UsersContext.Provider
-      value={{ deleteUser, updateUser, getAllUsers, users }}
+      value={{
+        deleteUser,
+        updateUser,
+        getAllUsers,
+        users,
+        selectedUser,
+        setSelectedUser,
+      }}
     >
       {children}
     </UsersContext.Provider>

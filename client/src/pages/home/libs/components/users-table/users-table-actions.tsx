@@ -15,10 +15,13 @@ interface UsersTableRowActionsProps {
 }
 
 export const UsersTableRowActions = ({ row }: UsersTableRowActionsProps) => {
-  const { deleteUser } = useUsersContext();
+  const { deleteUser, setSelectedUser } = useUsersContext();
+
   const user = row.original;
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    setSelectedUser(user);
+  };
 
   const handleDelete = async () => {
     deleteUser(user.id);
