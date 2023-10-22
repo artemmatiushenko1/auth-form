@@ -4,8 +4,10 @@ import { ProfileCard } from './libs/components/profile-card/profile-card.js';
 
 const HomePage = () => {
   return (
-    <div className="w-full h-full flex items-center justify-center bg-background flex-col">
-      <ProfileCard />
+    <div className="w-full flex justify-center bg-background pt-6 space-x-6">
+      <div className="relative">
+        <ProfileCard />
+      </div>
       <UsersContextProvider>
         <UsersTable />
       </UsersContextProvider>
